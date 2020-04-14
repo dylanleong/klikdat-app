@@ -10,5 +10,10 @@ blocks:
       jobs:
         - name: docker build
           commands:
-            - checkout
-            - docker build -t your-image .
+            - 'checkout '
+            - 'echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin '
+            - 'docker pull "${DOCKER_USERNAME}/dockerizing-nodejs-klikdat-app:latest" || true '
+            - 'docker build --cache-from "${DOCKER_USERNAME}/dockerizing-nodejs-klikdat-app:latest" -t "${DOCKER_USERNAME}/dockerizing-nodejs-klikdat-app:latest" . '
+            - 'docker push "${DOCKER_USERNAME}/dockerizing-nodejs-klikdat-app:latest"'
+      secrets:
+        - name: dockerhub
