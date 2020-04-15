@@ -18,7 +18,7 @@ services:
       DB_USER: postgres 
       DB_PASSWORD: postgres 
       DB_HOST: postgres 
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/klikdat
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432
     depends_on: 
       - postgres 
     ports: 
