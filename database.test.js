@@ -21,16 +21,16 @@ test('get person', async () => {
     expect(person.lastName).toEqual('Draper');
 });
 
-// test('delete person', async () => {
-//     expect.assertions(1);
-//     await db.Person.destroy({
-//         where: {
-//             id: 1
-//         }
-//     });
-//     const person = await db.Person.findByPk(1);
-//     expect(person).toBeNull();
-// });
+test('delete person', async () => {
+    expect.assertions(1);
+    await db.Person.destroy({
+        where: {
+            id: 1
+        }
+    });
+    const person = await db.Person.findByPk(1);
+    expect(person).toBeNull();
+});
 
 afterAll(async () => {
     await db.sequelize.close();
