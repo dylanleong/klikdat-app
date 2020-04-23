@@ -30,6 +30,6 @@ blocks:
         - name: Integration Test
           commands:
             - docker-compose run klikdat-app npm test
-promotions: 
-  - name: Deploy to Heroku 
-    pipeline_file: heroku.yml 
+promotions:
+  - name: Deploy to Heroku
+    pipeline_file: heroku.yml
