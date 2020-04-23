@@ -53,16 +53,24 @@ router.post('/signin', function (req, res) {
 });
 
 
-router.get('/product', passport.authenticate('jwt', { session: false }), function (req, res) {
-    var token = getToken(req.headers);
-    if (token) {
-        Product
-            .findAll()
-            .then((products) => res.status(200).send(products))
-            .catch((error) => { res.status(400).send(error); });
-    } else {
-        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
-    }
+// router.get('/product', passport.authenticate('jwt', { session: false }), function (req, res) {
+//     var token = getToken(req.headers);
+//     if (token) {
+//         Product
+//             .findAll()
+//             .then((products) => res.status(200).send(products))
+//             .catch((error) => { res.status(400).send(error); });
+//     } else {
+//         return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+//     }
+// });
+
+router.get('/product', function (req, res) {
+    var token = getToken(req.headers);    
+    Product
+        .findAll()
+        .then((products) => res.status(200).send(products))
+        .catch((error) => { res.status(400).send(error); });
 });
 
 router.post('/product', passport.authenticate('jwt', { session: false }), function (req, res) {
