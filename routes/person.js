@@ -1,11 +1,11 @@
-// persons.js
-
 var express = require('express');
+const jwt = require('jsonwebtoken');
 var router = express.Router();
-var db = require('../database');
+const Person = require('../models').Person;
+
 
 router.get("/all", function(req, res) {
-    db.Person.findAll()
+    Person.findAll()
         .then( persons => {
             res.status(200).send(JSON.stringify(persons));
         })
@@ -15,7 +15,7 @@ router.get("/all", function(req, res) {
 });
 
 router.get("/:id", function(req, res) {
-    db.Person.findByPk(req.params.id)
+    Person.findByPk(req.params.id)
         .then( person => {
             res.status(200).send(JSON.stringify(person));
         })
@@ -25,7 +25,7 @@ router.get("/:id", function(req, res) {
 });
 
 router.put("/", function(req, res) {
-    db.Person.create({
+    Person.create({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         id: req.body.id
@@ -39,7 +39,7 @@ router.put("/", function(req, res) {
 });
 
 router.delete("/:id", function(req, res) {
-    db.Person.destroy({
+    Person.destroy({
         where: {
             id: req.params.id
         }

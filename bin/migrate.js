@@ -1,4 +1,2 @@
-// bin/migrate.js
-
-var db = require('../database.js');
+const db = require('../models');
 db.sequelize.sync();
