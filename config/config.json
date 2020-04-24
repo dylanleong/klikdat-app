@@ -1,7 +1,10 @@
 {
   "development": {
     "use_env_variable": "DATABASE_URL",    
-    "dialect": "postgres"    
+    "dialect": "postgres",
+    "define": {
+      "underscored": "true"
+    }
   },
   "test": {
     "use_env_variable": "DATABASE_URL",
@@ -9,10 +12,16 @@
     "password": "postgres",
     "database": "postgres",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "define": {
+      "underscored": "true"
+    }
   },
   "production": {
     "use_env_variable": "DATABASE_URL",    
-    "dialect": "postgres"    
+    "dialect": "postgres",
+    "define": {
+      "underscored": "true"
+    }
   }
 }

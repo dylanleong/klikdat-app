@@ -26,8 +26,8 @@ router.get("/:id", function(req, res) {
 
 router.put("/", function(req, res) {
     Person.create({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
         id: req.body.id
         })
         .then( person => {
