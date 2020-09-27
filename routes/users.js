@@ -5,6 +5,7 @@ const router = express.Router();
 require('../config/passport')(passport);
 const User = require('../models').User;
 
+// register user
 router.post('/signup', function (req, res) {
     console.log(req.body);
     if (!req.body.username || !req.body.password) {
@@ -23,7 +24,10 @@ router.post('/signup', function (req, res) {
     }
 });
 
+// log user in
 router.post('/signin', function (req, res) {
+    console.log(req.body);
+    console.log('hello')
     User
         .findOne({
             where: {
@@ -41,7 +45,7 @@ router.post('/signin', function (req, res) {
                     var token = jwt.sign(JSON.parse(JSON.stringify(user)), 'nodeauthsecret', { expiresIn: 86400 * 30 });
                     jwt.verify(token, 'nodeauthsecret', function (err, data) {
                         console.log(err, data);
-                    })
+                    })                    
                     res.json({ success: true, token: 'JWT ' + token });
                 } else {
                     res.status(401).send({ success: false, msg: 'Authentication failed. Wrong password.' });
@@ -51,6 +55,15 @@ router.post('/signin', function (req, res) {
         .catch((error) => res.status(400).send(error));
 });
 
+// log user out
+router.post('/signout', function (req, res) {
+    req.session.destroy()
+    return(
+        res.status(200).send()
+    )
+})
+
+// list all users
 router.get("/all", function(req, res) {
     User.findAll()
         .then( users => {
@@ -61,6 +74,7 @@ router.get("/all", function(req, res) {
         });
 });
 
+// get user
 router.get("/:id", function(req, res) {
     User.findByPk(req.params.id)
         .then( user => {
@@ -71,6 +85,7 @@ router.get("/:id", function(req, res) {
         });
 });
 
+// create user
 router.put("/", function(req, res) {
     User.create({
         username: req.body.username,
@@ -84,6 +99,7 @@ router.put("/", function(req, res) {
         });
 });
 
+// delete user
 router.delete("/:id", function(req, res) {
     User.destroy({
         where: {

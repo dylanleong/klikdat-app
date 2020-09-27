@@ -4,13 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "nodemon ./bin/www",
+    "ui": "concurrently \"nodemon ./bin/www\" \"browser-sync start --proxy=localhost:3000 --files='**/*.css, **/*.pug, **/*.js' --ignore=node_modules --reload-delay 10 --no-ui --no-notify\"",
     "start": "node ./bin/www",
     "test": "jest",
     "migrate": "node ./bin/migrate.js"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
-    "cookie-parser": "~1.4.4",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "jsonwebtoken": "^8.5.1",
@@ -18,10 +21,14 @@
     "node-postgres": "^0.1.4",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
-    "pg": "^8.0.2",
-    "sequelize": "^5.21.6"
+    "pg": "^8.3.3",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.21.6",
+    "sequelize-auto": "^0.5.4"
   },
   "devDependencies": {
+    "browser-sync": "^2.26.7",
+    "concurrently": "^5.2.0",
     "jest": "^25.3.0"
   }
 }

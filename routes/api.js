@@ -1,11 +1,13 @@
+
 const express = require('express');
+const router = express.Router();
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
-const router = express.Router();
 require('../config/passport')(passport);
 const Product = require('../models').Product;
 const User = require('../models').User;
 
+// get product if authenticated
 router.get('/product', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
     if (token) {
@@ -19,6 +21,7 @@ router.get('/product', passport.authenticate('jwt', { session: false }), functio
 });
 
 
+// update product if authenticated
 router.post('/product', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
     if (token) {
@@ -35,6 +38,7 @@ router.post('/product', passport.authenticate('jwt', { session: false }), functi
     }
 });
 
+// function to get JWT
 getToken = function (headers) {
     if (headers && headers.authorization) {
         var parted = headers.authorization.split(' ');
