@@ -2,8 +2,25 @@ var express = require('express');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const router = express.Router();
-require('../config/passport')(passport);
 const User = require('../models').User;
+const getToken = require('../lib/getToken')
+
+// verify JWT
+router.post('/verify', function (req, res) {    
+    var token = req.body.token
+    jwt.verify(token, 'nodeauthsecret', function (err, data) {
+        console.log(err, data)
+        if (data) {
+            return res.status(200).send({ success: true, msg: 'JWT Valid.' })
+        } else {
+            res.status(401).send({ success: false, msg: 'JWT Invalid.' });
+        }
+    })
+    
+    // return (
+    //     res.status(200).send()
+    // )
+})
 
 // register user
 router.post('/signup', function (req, res) {
@@ -14,10 +31,12 @@ router.post('/signup', function (req, res) {
         User
             .create({
                 username: req.body.username,
-                password: req.body.password
+                password: req.body.password,
+                first_name: req.body.first_name,
+                last_name: req.body.last_name
             })
             .then((user) => {
-                res.status(201).send(user)                
+                res.status(201).send(user)
             })
             .catch((error) => {
                 console.log(error);
@@ -28,8 +47,6 @@ router.post('/signup', function (req, res) {
 
 // log user in
 router.post('/signin', function (req, res) {
-    console.log(req.body);
-    console.log('hello')
     User
         .findOne({
             where: {
@@ -47,8 +64,17 @@ router.post('/signin', function (req, res) {
                     var token = jwt.sign(JSON.parse(JSON.stringify(user)), 'nodeauthsecret', { expiresIn: 86400 * 30 });
                     jwt.verify(token, 'nodeauthsecret', function (err, data) {
                         console.log(err, data);
-                    })                    
-                    res.json({ success: true, token: 'JWT ' + token });
+                    })
+                    res.json({
+                        success: true,
+                        token: 'JWT ' + token,
+                        id: user.id,
+                        first_name: user.first_name,
+                        username: user.username
+                    });
+                    user.update({
+                        last_login_at: new Date()
+                    })
                 } else {
                     res.status(401).send({ success: false, msg: 'Authentication failed. Wrong password.' });
                 }
@@ -57,61 +83,68 @@ router.post('/signin', function (req, res) {
         .catch((error) => res.status(400).send(error));
 });
 
+
 // log user out
 router.post('/signout', function (req, res) {
     req.session.destroy()
-    return(
+    return (
         res.status(200).send()
     )
 })
 
 // list all users
-router.get("/all", function(req, res) {
+router.get("/all", function (req, res) {
     User.findAll()
-        .then( users => {
+        .then(users => {
             res.status(200).send(JSON.stringify(users));
         })
-        .catch( err => {
+        .catch(err => {
             res.status(500).send(JSON.stringify(err));
         });
 });
 
 // get user
-router.get("/:id", function(req, res) {
-    User.findByPk(req.params.id)
-        .then( user => {
-            res.status(200).send(JSON.stringify(user));
-        })
-        .catch( err => {
-            res.status(500).send(JSON.stringify(err));
-        });
+router.get("/:id", passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        User.findByPk(req.params.id)
+            .then(user => {
+                res.status(200).send(JSON.stringify(user));
+            })
+            .catch(err => {
+                res.status(500).send(JSON.stringify(err));
+            });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+
 });
 
 // create user
-router.put("/", function(req, res) {
+router.put("/", function (req, res) {
     User.create({
         username: req.body.username,
-        password: req.body.password        
-        })
-        .then( user => {
+        password: req.body.password
+    })
+        .then(user => {
             res.status(200).send(JSON.stringify(user));
         })
-        .catch( err => {
+        .catch(err => {
             res.status(500).send(JSON.stringify(err));
         });
 });
 
 // delete user
-router.delete("/:id", function(req, res) {
+router.delete("/:id", function (req, res) {
     User.destroy({
         where: {
             username: req.params.username
         }
-        })
-        .then( () => {
+    })
+        .then(() => {
             res.status(200).send();
         })
-        .catch( err => {
+        .catch(err => {
             res.status(500).send(JSON.stringify(err));
         });
 });

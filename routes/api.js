@@ -6,6 +6,7 @@ const passport = require('passport');
 require('../config/passport')(passport);
 const Product = require('../models').Product;
 const User = require('../models').User;
+require('../lib/getToken')
 
 // get product if authenticated
 router.get('/product', passport.authenticate('jwt', { session: false }), function (req, res) {
@@ -37,19 +38,5 @@ router.post('/product', passport.authenticate('jwt', { session: false }), functi
         return res.status(403).send({ success: false, msg: 'Unauthorized.' });
     }
 });
-
-// function to get JWT
-getToken = function (headers) {
-    if (headers && headers.authorization) {
-        var parted = headers.authorization.split(' ');
-        if (parted.length === 2) {
-            return parted[1];
-        } else {
-            return null;
-        }
-    } else {
-        return null;
-    }
-};
 
 module.exports = router;
