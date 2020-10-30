@@ -17,6 +17,7 @@ services:
       context: .
     environment:      
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/klikdat
+      JWT_SECRET: nodeauthsecret
     depends_on:
       - postgres
     ports:

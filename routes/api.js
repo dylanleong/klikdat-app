@@ -6,7 +6,7 @@ const passport = require('passport');
 require('../config/passport')(passport);
 const Product = require('../models').Product;
 const User = require('../models').User;
-require('../lib/getToken')
+const getToken = require('../lib/getToken')
 
 // get product if authenticated
 router.get('/product', passport.authenticate('jwt', { session: false }), function (req, res) {

@@ -8,18 +8,14 @@ const getToken = require('../lib/getToken')
 // verify JWT
 router.post('/verify', function (req, res) {    
     var token = req.body.token
-    jwt.verify(token, 'nodeauthsecret', function (err, data) {
-        console.log(err, data)
+    jwt.verify(token, process.env.JWT_SECRET, function (err, data) {
+        // console.log(err, data)
         if (data) {
-            return res.status(200).send({ success: true, msg: 'JWT Valid.' })
+            return res.status(200).send({ valid: true, msg: 'JWT Valid.' })
         } else {
-            res.status(401).send({ success: false, msg: 'JWT Invalid.' });
+            return res.status(200).send({ valid: false, msg: 'JWT Invalid.' });
         }
-    })
-    
-    // return (
-    //     res.status(200).send()
-    // )
+    })        
 })
 
 // register user
@@ -61,9 +57,9 @@ router.post('/signin', function (req, res) {
             }
             user.comparePassword(req.body.password, (err, isMatch) => {
                 if (isMatch && !err) {
-                    var token = jwt.sign(JSON.parse(JSON.stringify(user)), 'nodeauthsecret', { expiresIn: 86400 * 30 });
-                    jwt.verify(token, 'nodeauthsecret', function (err, data) {
-                        console.log(err, data);
+                    var token = jwt.sign(JSON.parse(JSON.stringify(user)), process.env.JWT_SECRET, { expiresIn: 86400 * 30 });                    
+                    jwt.verify(token, process.env.JWT_SECRET, function (err, data) {
+                        // console.log(err, data);
                     })
                     res.json({
                         success: true,
@@ -130,6 +126,24 @@ router.put("/", function (req, res) {
             res.status(200).send(JSON.stringify(user));
         })
         .catch(err => {
+            res.status(500).send(JSON.stringify(err));
+        });
+});
+
+router.patch("/:id", function(req, res) {
+    console.log(req.body);
+    User.update({
+        username: req.body.username,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        },
+        {where: {
+            id: req.params.id
+        }})
+        .then( user => {
+            res.status(200).send(JSON.stringify(user));
+        })
+        .catch( err => {
             res.status(500).send(JSON.stringify(err));
         });
 });
