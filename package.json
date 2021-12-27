@@ -26,7 +26,7 @@
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.21.6",
     "sequelize-auto": "^0.5.4",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.4.0"
   },
   "devDependencies": {
     "browser-sync": "^2.26.7",
