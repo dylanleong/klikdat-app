@@ -24,7 +24,7 @@ var server = http.createServer(app);
 /**
  * Initialize socket.io server.
  */
-var io = require('socket.io').listen(server);
+var io = require('socket.io')(server);
 require('./socket')(io)
 
 

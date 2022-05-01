@@ -11,6 +11,7 @@ var apiRouter = require('./routes/api');
 var personsRouter = require('./routes/persons');
 var usersRouter = require('./routes/users');
 var placesRouter = require('./routes/places');
+var shoesizesRouter = require('./routes/shoesizes');
 
 var app = express();
 
@@ -26,5 +27,6 @@ app.use('/persons', personsRouter);
 app.use('/api', apiRouter);
 app.use('/users', usersRouter);
 app.use('/places', placesRouter);
+app.use('/shoesizes', shoesizesRouter);
 
 module.exports = app;

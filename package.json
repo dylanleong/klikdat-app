@@ -11,26 +11,27 @@
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
-    "body-parser": "^1.19.0",
-    "cookie-parser": "^1.4.5",
+    "body-parser": "^1.19.1",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "debug": "~2.6.9",
-    "dotenv": "^8.2.0",
-    "express": "~4.16.1",
+    "debug": "~4.3.3",
+    "dotenv": "^10.0.0",
+    "express": "~4.17.2",
     "jsonwebtoken": "^8.5.1",
-    "morgan": "~1.9.1",
-    "node-postgres": "^0.1.4",
-    "passport": "^0.4.1",
+    "morgan": "~1.10.0",
+    "node-postgres": "^0.6.2",
+    "nodemon": "^2.0.15",
+    "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
-    "pg": "^8.3.3",
-    "pg-hstore": "^2.3.3",
-    "sequelize": "^5.21.6",
-    "sequelize-auto": "^0.5.4",
-    "socket.io": "^2.3.0"
+    "pg": "^8.7.1",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.12.5",
+    "sequelize-auto": "^0.8.8",
+    "socket.io": "^4.4.1"
   },
   "devDependencies": {
-    "browser-sync": "^2.26.7",
-    "concurrently": "^5.2.0",
-    "jest": "^25.3.0"
+    "browser-sync": "^2.27.7",
+    "concurrently": "^7.0.0",
+    "jest": "^27.4.7"
   }
 }
