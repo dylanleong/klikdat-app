@@ -35,6 +35,5 @@ test('delete person', async () => {
 
 afterAll(async done => {
     // Closing the DB connection allows Jest to exit successfully.
-    db.sequelize.close();
-    done();
+    db.sequelize.close();    
   });
